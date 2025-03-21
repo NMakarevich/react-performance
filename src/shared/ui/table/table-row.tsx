@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, memo, useEffect, useState } from 'react';
 import { Country } from '@shared/types.ts';
 import cl from 'classnames';
 
@@ -10,7 +10,7 @@ interface Props {
   setLs: (ls: string) => void;
 }
 
-export function TableRow({ row, ls, setLs }: Props): ReactElement {
+function TableRow({ row, ls, setLs }: Props): ReactElement {
   const [isVisited, setIsVisited] = useState(false);
 
   function handleClick() {
@@ -46,3 +46,5 @@ export function TableRow({ row, ls, setLs }: Props): ReactElement {
     </tr>
   );
 }
+
+export default memo(TableRow);

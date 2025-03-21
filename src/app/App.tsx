@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Country, Table, fetchCountries } from '@shared/index';
+import { Country, fetchCountries } from '@shared/index';
+import Table from '@shared/ui/table/table.tsx';
 
 import './App.css';
 

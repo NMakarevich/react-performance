@@ -1,4 +1,10 @@
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { ArrowDrop } from '@shared/ui/table/arrow-drop.tsx';
 import { Arrow } from '@shared/ui/table/arrow.tsx';
 import { Close } from '@shared/ui/table/close.tsx';
@@ -8,19 +14,19 @@ import cl from 'classnames';
 import styles from './table-head.module.scss';
 
 interface Props {
-  sortByName: () => void;
-  sortByPopulation: () => void;
+  setNameDirection: (direction: 'asc' | 'desc' | '') => void;
+  nameDirection: string;
+  setPopulationDirection: (direction: 'asc' | 'desc' | '') => void;
+  populationDirection: string;
   filterByRegion: (region: string) => void;
   regions: string[];
   findByName: (name: string) => void;
-  populationDirection: 'asc' | 'desc' | '';
-  nameDirection: 'asc' | 'desc' | '';
 }
 
 export function TableHead({
   regions,
-  sortByPopulation,
-  sortByName,
+  setPopulationDirection,
+  setNameDirection,
   findByName,
   filterByRegion,
   populationDirection,
@@ -33,18 +39,38 @@ export function TableHead({
     setShowSearch(!showSearch);
   }
 
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    findByName(event.target.value);
-  }
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      findByName(event.target.value);
+    },
+    [findByName]
+  );
 
-  function toggleRegionSelect() {
+  const toggleRegionSelect = useCallback(() => {
     setShowRegions(!showRegions);
-  }
+  }, [showRegions]);
 
-  function selectRegion(region: string) {
-    filterByRegion(region);
-    toggleRegionSelect();
-  }
+  const selectRegion = useCallback(
+    (region: string) => {
+      filterByRegion(region);
+      toggleRegionSelect();
+    },
+    [filterByRegion, toggleRegionSelect]
+  );
+
+  const setSortNameDirection = useCallback(() => {
+    setPopulationDirection('');
+    if (!nameDirection) setNameDirection('asc');
+    else if (nameDirection === 'asc') setNameDirection('desc');
+    else setNameDirection('asc');
+  }, [nameDirection, setNameDirection, setPopulationDirection]);
+
+  const setSortPopulationDirection = useCallback(() => {
+    setNameDirection('');
+    if (!populationDirection) setPopulationDirection('asc');
+    else if (populationDirection === 'asc') setPopulationDirection('desc');
+    else setPopulationDirection('asc');
+  }, [populationDirection, setNameDirection, setPopulationDirection]);
 
   function closeRegionSelect(event: MouseEvent) {
     const target: HTMLElement | null = event.target as HTMLElement;
@@ -103,7 +129,7 @@ export function TableHead({
               </div>
             )}
             <div
-              onClick={sortByName}
+              onClick={setSortNameDirection}
               className={cl(styles.direction, styles[nameDirection.toString()])}
             >
               <Arrow />
@@ -114,7 +140,7 @@ export function TableHead({
           <div className={styles.sort}>
             Population{' '}
             <div
-              onClick={sortByPopulation}
+              onClick={setSortPopulationDirection}
               className={cl(
                 styles.direction,
                 styles[populationDirection.toString()]

@@ -1,0 +1,131 @@
+@use "../colors" as *;
+
+.table {
+  &Row {
+    background-color: $thead-background;
+    color: $thead-color;
+    border-bottom: 2px solid $border-color;
+  }
+
+  &Cell {
+    padding: 15px;
+    line-height: 30px;
+    text-align: center;
+
+    &:last-child {
+      width: 50px;
+    }
+
+    &:not(:last-child) {
+      border-right: 1px solid $border-color;
+    }
+  }
+}
+
+.regions {
+  position: relative;
+  cursor: pointer;
+
+  svg {
+    transition: transform 0.3s;
+  }
+
+  &Open {
+    svg {
+        transform: rotate(180deg);
+    }
+  }
+
+  &List {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    list-style: none;
+    background-color: $select-list-background;
+    color: $select-list-color;
+
+    &Item {
+      padding: 5px;
+      transition: background-color 0.3s;
+      text-align: center;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $border-color;
+      }
+
+      &:hover {
+        background-color: rgb(0 0 0 / 0.1);
+      }
+    }
+  }
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    padding: 5px;
+    background-color: transparent;
+    border: 1px solid $input;
+    color: $input;
+  }
+
+  &Close {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    cursor: pointer;
+  }
+}
+
+.sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  .direction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    opacity: 0.5;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(0 0 0 / 0.1);
+    }
+
+    &.asc {
+      opacity: 1;
+    }
+    &.desc {
+      opacity: 1;
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  svg {
+    display: block;
+    border-radius: 50%;
+    padding: 3px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(0 0 0 / 0.1);
+    }
+  }
+}
